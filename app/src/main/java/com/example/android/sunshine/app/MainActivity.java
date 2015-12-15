@@ -1,5 +1,9 @@
 package com.example.android.sunshine.app;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -23,6 +27,7 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
+    private static String LOG_TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +56,29 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }else if(id == R.id.action_view_map){
+            openMapUsingAddress();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openMapUsingAddress(){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String postal = pref.getString(getString(R.string.pre_location_key), getString(R.string.pre_location_default));
+        Uri geoUri = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", postal)
+                .build();
+
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(geoUri);
+        if(i.resolveActivity(getPackageManager()) != null)
+            startActivity(i);
+        else
+            Log.e(LOG_TAG, "Cannot resolve address at " + postal);
     }
 }

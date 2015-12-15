@@ -1,9 +1,12 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +37,7 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
     private ArrayAdapter<String> weatherForecastAdapter;
+    private static String LOG_TAG = "ForecastFragment";
 
     public ForecastFragment() {
     }
@@ -53,13 +57,30 @@ public class ForecastFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
+
         if(id == R.id.action_refresh){
-            FetchWeatherTask task = new FetchWeatherTask();
-            task.execute("94043");
+            updateWeather();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateWeather(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = sharedPref.getString(getString(R.string.pre_location_key), getString(R.string.pre_location_default));
+        Log.v(LOG_TAG, "Location is "+location);
+
+        if(!location.equals("")) {
+            FetchWeatherTask task = new FetchWeatherTask();
+            task.execute(location);
+        }
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateWeather();
     }
 
     @Override
@@ -67,20 +88,11 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        List<String> weather_data = new ArrayList<String>();
-
-        weather_data.add("Today - Sunny - 88/63");
-        weather_data.add("Tomorrow - Foggy - 70/64");
-        weather_data.add("Weds - Cloudy - 72/63");
-        weather_data.add("Thurs - Rainy - 64/51");
-        weather_data.add("Fri - Foggy - 70/46");
-        weather_data.add("Sat - Sunny - 76/68");
-
         weatherForecastAdapter = new ArrayAdapter(
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
-                weather_data);
+                new ArrayList<String>());
 
         ListView list = (ListView) rootView.findViewById(R.id.listview_forecast);
         list.setAdapter(weatherForecastAdapter);
@@ -178,7 +190,7 @@ public class ForecastFragment extends Fragment {
             Log.v(LOG_TAG, "Forecast JSON string: " + forecastJsonStr);
 
             try {
-                String[] parsedWeatherData = WeatherDataParser.getWeatherdata(forecastJsonStr);
+                String[] parsedWeatherData = WeatherDataParser.getWeatherdata(getActivity(), forecastJsonStr);
 
                 return parsedWeatherData;
             }catch(JSONException e){
@@ -190,9 +202,7 @@ public class ForecastFragment extends Fragment {
         protected void onPostExecute(String[] weatherData) {
             if(weatherData != null){
                 weatherForecastAdapter.clear();
-                for(String data: weatherData)
-                    weatherForecastAdapter.add(data);
-
+                weatherForecastAdapter.addAll(weatherData);
             }
 
         }

@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Sunshine</string>
-    <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_refresh" translatable="false">Refresh</string>
+
+
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Label for the location preference [CHAR LIMIT=30] -->
+    <string name="pre_location_label">Location</string>
+    <!-- Key name for storing location in SharedPreferences [CHAR LIMIT=NONE] -->
+    <string name="pre_location_key">location</string>
+    <!-- Default postal code for the location preference [CHAR LIMIT=NONE] -->
+    <string name="pre_location_default">34043</string>
+
+    <string name="pref_unit_key">unit</string>
+    <string name="pref_unit_title">Unit</string>
+    <string name="pref_unit_dialogTitle">Choose Preferred Unit</string>
+    <string name="pref_unit_default">metric</string>
+    <string name="pref_unit_metric">metric</string>
+    <string name="pref_unit_imperial">imperial</string>
+
+    <string-array name="pref_unit_entries">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+
+    <string-array name="pref_unit_values">
+        <item>metric</item>
+        <item>imperial</item>
+    </string-array>
+
+    <string name="action_share_title">Share</string>
 
 </resources>

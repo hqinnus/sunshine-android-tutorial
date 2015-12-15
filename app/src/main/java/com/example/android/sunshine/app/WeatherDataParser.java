@@ -1,5 +1,8 @@
 package com.example.android.sunshine.app;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -22,7 +25,7 @@ public class WeatherDataParser {
      * retrieve the maximum temperature for the day indicated by dayIndex
      * (Note: 0-indexed, so 0 would refer to the first day).
      */
-    public static String[] getWeatherdata(String weatherJsonStr)
+    public static String[] getWeatherdata(Context context, String weatherJsonStr)
             throws JSONException {
         ArrayList<String> result = new ArrayList<String>();
         JSONObject weather = new JSONObject(weatherJsonStr);
@@ -52,7 +55,7 @@ public class WeatherDataParser {
             dateTime = dayTime.setJulianDay(julianStartDay+i);
             day = getReadableDateString(dateTime);
 
-            result.add(day + " - " + description + " - " + formatHighLows(max, min));
+            result.add(day + " - " + description + " - " + formatHighLows(context, max, min));
         }
 
         for (String s : result) {
@@ -69,7 +72,15 @@ public class WeatherDataParser {
         return shortenedDateFormat.format(time);
     }
 
-    private static String formatHighLows(double high, double low) {
+    private static String formatHighLows(Context context, double high, double low) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String unit = pref.getString(context.getString(R.string.pref_unit_key), context.getString(R.string.pref_unit_default));
+
+        if(unit.equals(context.getString(R.string.pref_unit_imperial))){
+            high = (high * 1.8) + 32;
+            low = (low * 1.8) + 32;
+        }
+
         // For presentation, assume the user doesn't care about tenths of a degree.
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);

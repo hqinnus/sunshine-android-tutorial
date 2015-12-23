@@ -1,12 +1,11 @@
-package com.example.android.sunshine.app.db;
+package com.example.android.sunshine.app.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.location.Location;
 
-import com.example.android.sunshine.app.db.WeatherContract.LocationEntry;
-import com.example.android.sunshine.app.db.WeatherContract.WeatherEntry;
+import com.example.android.sunshine.app.data.WeatherContract.LocationEntry;
+import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 
 /**
  * Created by huangq on 18/12/2015.

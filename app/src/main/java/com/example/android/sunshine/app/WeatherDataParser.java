@@ -74,9 +74,9 @@ public class WeatherDataParser {
 
     private static String formatHighLows(Context context, double high, double low) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        String unit = pref.getString(context.getString(R.string.pref_unit_key), context.getString(R.string.pref_unit_default));
+        String unit = pref.getString(context.getString(R.string.pref_units_key), context.getString(R.string.pref_units_default));
 
-        if(unit.equals(context.getString(R.string.pref_unit_imperial))){
+        if(unit.equals(context.getString(R.string.pref_units_imperial))){
             high = (high * 1.8) + 32;
             low = (low * 1.8) + 32;
         }

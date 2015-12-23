@@ -16,12 +16,12 @@
     <!-- Default postal code for the location preference [CHAR LIMIT=NONE] -->
     <string name="pre_location_default">34043</string>
 
-    <string name="pref_unit_key">unit</string>
-    <string name="pref_unit_title">Unit</string>
-    <string name="pref_unit_dialogTitle">Choose Preferred Unit</string>
-    <string name="pref_unit_default">metric</string>
-    <string name="pref_unit_metric">metric</string>
-    <string name="pref_unit_imperial">imperial</string>
+    <string name="pref_units_key">unit</string>
+    <string name="pref_units_title">Unit</string>
+    <string name="pref_units_dialogTitle">Choose Preferred Unit</string>
+    <string name="pref_units_default">metric</string>
+    <string name="pref_units_metric">metric</string>
+    <string name="pref_units_imperial">imperial</string>
 
     <string-array name="pref_unit_entries">
         <item>Metric</item>
